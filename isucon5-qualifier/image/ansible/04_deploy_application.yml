@@ -1,8 +1,8 @@
 ---
 - hosts: imageservers
   gather_facts: no
-  sudo: yes
-  sudo_user: isucon
+  become: true
+  become_user: isucon
   tasks:
     - git:
         repo=https://github.com/isucon/isucon5-qualify.git
@@ -60,16 +60,16 @@
 
     # TODO: - npm install
     # TODO: - composer?
-    - name: scala
-      shell: ./sbt launcher
-      args:
-        chdir: /home/isucon/webapp/scala
+    # - name: scala
+    #   shell: ./sbt launcher
+    #   args:
+    #     chdir: /home/isucon/webapp/scala
 
   # post_tasks:
     # - command: sudo su - isucon /home/isucon/init.sh
 
 - hosts: imageservers
-  sudo: yes
+  become: true
   gather_facts: no
   tasks:
     - copy: src=../files/env.sh dest=/home/isucon/env.sh owner=isucon mode=644
@@ -85,9 +85,9 @@
       copy: src=../files/systemd.python.service dest=/etc/systemd/system/isuxi.python.service owner=root mode=644
     - name: go (systemd)
       copy: src=../files/systemd.go.service dest=/etc/systemd/system/isuxi.go.service owner=root mode=644
-    - name: scala (systemd)
-      copy: src=../files/systemd.scala.service dest=/etc/systemd/system/isuxi.scala.service owner=root mode=644
+    # - name: scala (systemd)
+    #   copy: src=../files/systemd.scala.service dest=/etc/systemd/system/isuxi.scala.service owner=root mode=644
     # TODO: - nodejs (systemd)
 
     - name: default application selection
-      service: name=isuxi.ruby state=running enabled=true
+      service: name=isuxi.ruby state=started enabled=true

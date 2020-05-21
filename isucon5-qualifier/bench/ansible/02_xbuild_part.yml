@@ -1,7 +1,7 @@
 ---
 - hosts: benchservers
-  sudo: yes
-  sudo_user: isucon
+  become: true
+  become_user: isucon
   gather_facts: no
   tasks:
     - git:
@@ -9,12 +9,12 @@
         dest=/home/isucon/.xbuild
         update=yes
     # ruby
-    - command: /home/isucon/.xbuild/ruby-install 2.2.3 /home/isucon/.local/ruby
+    - command: /home/isucon/.xbuild/ruby-install 2.3.7 /home/isucon/.local/ruby
       args:
         creates: /home/isucon/.local/ruby/bin/ruby
 
 - hosts: benchservers
-  sudo: yes
+  become: true
   gather_facts: no
   tasks:
     # java

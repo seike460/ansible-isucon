@@ -1,8 +1,8 @@
 ---
 - hosts: benchservers
   gather_facts: no
-  sudo: yes
-  sudo_user: isucon
+  become: true
+  become_user: isucon
   tasks:
     - git:
         repo=https://github.com/isucon/isucon5-qualify.git
@@ -17,7 +17,7 @@
         chdir: /home/isucon/isucon5-qualify/bench
 
 - hosts: benchservers
-  sudo: yes
+  become: true
   gather_facts: no
   tasks:
     - copy: src=../files/env.bench.sh dest=/home/isucon/env.bench.sh owner=isucon mode=644

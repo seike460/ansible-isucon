@@ -1,10 +1,10 @@
 ---
 - hosts: imageservers
-  sudo: yes
+  become: true
   gather_facts: no
   tasks:
     - apt: name=nginx state=present
-    - service: name=nginx state=running enabled=true
+    - service: name=nginx state=started enabled=true
     - copy: src=../files/nginx.conf dest=/etc/nginx/nginx.conf owner=root mode=644
       notify:
         - reload nginx
@@ -15,7 +15,7 @@
       copy: src=../files/my.cnf.restore dest=/etc/my.cnf owner=root mode=644
       notify:
         - restart mysqld
-    - service: name=mysql state=running enabled=true
+    - service: name=mysql state=started enabled=true
     - apt: name=python-mysqldb state=present
     - mysql_user: name=isucon password=isucon priv=*.*:ALL state=present
   handlers:

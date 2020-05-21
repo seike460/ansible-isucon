@@ -1,8 +1,8 @@
 ---
 - hosts: imageservers
   gather_facts: no
-  sudo: yes
-  sudo_user: isucon
+  become: true
+  become_user: isucon
   tasks:
     - git:
         repo=https://github.com/isucon/isucon5-qualify.git
@@ -29,7 +29,7 @@
 
 - hosts: imageservers
   gather_facts: no
-  sudo: yes
+  become: true
   tasks:
     - name: copy my.cnf
       copy: src=../files/my.cnf dest=/etc/my.cnf owner=root mode=644
